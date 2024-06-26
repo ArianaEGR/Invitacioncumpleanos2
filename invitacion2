@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación de Cumpleaños</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        (function(){
+            emailjs.init("zxmkDGcQQXcqesn-n"); // Reemplaza con tu userID de EmailJS
+        })();
+    </script>
+</head>
+<body>
+    <div class="popup" id="popup">
+        <span class="popup-text">Mi Cumpleaños</span>
+    </div>
+    <div class="invitation-container">
+        <h1 class="title">¡Estás Invitado!</h1>
+        <p class="description">Voy a festejarlo el <strong>10 de agosto</strong> desde las <strong>17:00 hrs</strong>.</p>
+        <p class="description"> Vamos a estar en <strong>Servidumbre de paso 6075, Montevideo</strong>.</p>
+        <button class="location-button" onclick="redirectToLocation()">Ver Ubicación</button>
+        <form id="confirmation-form" class="confirmation-form">
+            <input type="text" id="name" name="name" placeholder="Tu Nombre" required>
+            <button type="submit" class="confirm-button">Confirmar Asistencia</button>
+        </form>
+    </div>
+
+    <script>
+        function redirectToLocation() {
+            const address = "Servidumbre de paso 6075, Montevideo";
+            const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+            window.location.href = googleMapsUrl;
+        }
+
+        document.getElementById('confirmation-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+
+            emailjs.send("service_391i0l9", "template_auu3lzd", {
+                to_name: "Ariana",
+                from_name: name,
+                message: `Hola Ariana, ${name} ha confirmado su asistencia.`
+            })
+            .then(function(response) {
+                alert('Confirmación enviada con éxito. Gracias por confirmar tu asistencia.');
+            }, function(error) {
+                alert('Error al enviar la confirmación. Por favor, inténtalo de nuevo.');
+            });
+        });
+
+        window.onload = function() {
+            const popup = document.getElementById('popup');
+            popup.classList.add('show-fullscreen');
+            setTimeout(() => {
+                popup.classList.remove('show-fullscreen');
+                popup.classList.add('fixed-top');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
